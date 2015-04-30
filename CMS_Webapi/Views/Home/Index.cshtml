@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Single Page CMS";
+}
+
+@Html.ActionLink("Categories", "Index", "Home", null, null, "categories", null, null)
+<hr/>
+@Html.ActionLink("Articles", "Index", "Home", null, null, "articles", null, null)
+
+<div ng-view></div>
+
+@section scripts
+{
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
+    <script src="~/Scripts/angular-resource.js"></script>
+    <script src="~/Scripts/_app/app.js"></script>
+}
