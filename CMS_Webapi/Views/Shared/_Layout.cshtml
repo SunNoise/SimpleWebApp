@@ -19,9 +19,9 @@
                 @Html.ActionLink("Single Page CMS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav" ng-controller="categoryController">
+                <ul class="nav navbar-nav" ng-controller="navController">
                     <li ng-repeat="cat in categories">
-                        <a href="/#articles/{{cat.Name}}"><b>{{cat.Name}}</b></a>
+                        <a href="/#articles/{{cat.Id}}"><b>{{cat.Name}}</b></a>
                     </li>
                 </ul>
             </div>

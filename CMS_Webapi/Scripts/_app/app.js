@@ -17,6 +17,20 @@ app.factory("categoryService", function ($resource) {
     });
 });
 
+app.run(function ($rootScope) {
+    $rootScope.$on("changedCategories", function () {
+        $rootScope.$broadcast("broadcastCats");
+    });
+});
+
+app.controller("navController", function($scope, categoryService) {
+    $scope.categories = categoryService.query();
+
+    $scope.$on("broadcastCats", function () {
+        $scope.categories = categoryService.query();
+    });
+});
+
 app.controller("articleController", function ($scope, articleService, categoryService) {
     $scope.settings = {
         title: "Articles"
@@ -166,6 +180,10 @@ app.controller("categoryController", function ($scope, categoryService) {
             Name: ""
         };
     }
+
+    $scope.$watch("categories", function() {
+        $scope.$emit("changedCategories");
+    });
 });
 
 app.config(function ($routeProvider) {
