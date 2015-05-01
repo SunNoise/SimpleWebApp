@@ -156,6 +156,7 @@
     <Compile Include="Controllers\ArticlesController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -163,6 +164,7 @@
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -978,8 +980,12 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_app\app.js" />
     <Content Include="Views\Articles\Index.html" />
+    <Content Include="Views\Categories\ArticlesByCategory.html" />
     <Content Include="Views\Categories\Index.html" />
-    <Content Include="Web.config" />
+    <Content Include="Views\Users\Index.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

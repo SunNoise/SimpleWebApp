@@ -21,7 +21,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" ng-controller="navController">
                     <li ng-repeat="cat in categories">
-                        <a href="/#articles/{{cat.Id}}"><b>{{cat.Name}}</b></a>
+                        @Html.ActionLink("{{cat.Name}}", "Index", "Home", null, null, "articlesByCategory/{{cat.Id}}", null, null)
                     </li>
                 </ul>
             </div>

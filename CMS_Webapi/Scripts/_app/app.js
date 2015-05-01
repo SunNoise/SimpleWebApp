@@ -17,6 +17,14 @@ app.factory("categoryService", function ($resource) {
     });
 });
 
+app.factory("userService", function ($resource) {
+    return $resource("/api/Users/:id",
+    { id: "@Id" },
+    {
+        update: { method: "PUT" }
+    });
+});
+
 app.run(function ($rootScope) {
     $rootScope.$on("changedCategories", function () {
         $rootScope.$broadcast("broadcastCats");
@@ -31,13 +39,18 @@ app.controller("navController", function($scope, categoryService) {
     });
 });
 
-app.controller("articleController", function ($scope, articleService, categoryService) {
+app.controller("artsByCatController", function ($scope, categoryService) {
+    $scope.category = categoryService.query();
+});
+
+app.controller("articleController", function ($scope, articleService, categoryService, userService) {
     $scope.settings = {
         title: "Articles"
     };
 
     $scope.articles = articleService.query();
     $scope.categories = categoryService.query();
+    $scope.users = userService.query();
 
     $scope.errors = [];
 
@@ -110,6 +123,7 @@ app.controller("articleController", function ($scope, articleService, categorySe
         $scope.errors = [];
         $scope.settings.title = title;
         $scope.categories = categoryService.query();
+        $scope.users = userService.query();
         $("#modal-dialog").modal("show");
     }
 });
@@ -126,7 +140,8 @@ app.controller("categoryController", function ($scope, categoryService) {
 
     $scope.category = {
         Id: "",
-        Name: ""
+        Name: "",
+        Articles: ""
     };
 
 
@@ -186,6 +201,83 @@ app.controller("categoryController", function ($scope, categoryService) {
     });
 });
 
+app.controller("userController", function ($scope, userService, articleService) {
+    $scope.settings = {
+        title: "Users"
+    };
+
+    $scope.articles = articleService.query();
+    $scope.users = userService.query();
+
+    $scope.errors = [];
+
+    $scope.user = {
+        Id: "",
+        Username: "",
+        Email: "",
+        Articles: ""
+    };
+
+    $scope.saveUser = function () {
+        if ($scope.user.Id > 0) {
+            userService.update($scope.user, $scope.refreshUsers, $scope.errorMessage);
+        } else {
+            $scope.user.Id = 0;
+            userService.save($scope.user, $scope.refreshUsers, $scope.errorMessage);
+        }
+    }
+
+    $scope.errorMessage = function (response) {
+        var errors = [];
+        for (var key in response.data.ModelState) {
+            for (var i = 0; i < response.data.ModelState[key].length; i++) {
+                errors.push(response.data.ModelState[key][i]);
+            }
+        }
+        $scope.errors = errors;
+    };
+
+    $scope.refreshUsers = function () {
+        $scope.users = userService.query();
+        $("#modal-dialog").modal("hide");
+    };
+
+    $scope.deleteUser = function (user) {
+        userService.delete(user, $scope.refreshUsers);
+    };
+
+    $scope.selectUser = function (user) {
+        $scope.user = user;
+        $scope.showDialog("Edit User");
+    };
+
+    $scope.clearUser = function () {
+        $scope.user = {
+            Id: "",
+            Username: "",
+            Email: "",
+            Articles: ""
+        };
+    };
+
+    $scope.deleteUser = function (user) {
+        userService.delete(user, $scope.refreshUsers, $scope.errorMessage);
+        $scope.clearUser();
+    }
+
+    $scope.showAddUserDialog = function () {
+        $scope.clearUser();
+        $scope.showDialog("Add New User");
+    }
+
+    $scope.showDialog = function (title) {
+        $scope.errors = [];
+        $scope.settings.title = title;
+        $scope.articles = articleService.query();
+        $("#modal-dialog").modal("show");
+    }
+});
+
 app.config(function ($routeProvider) {
     $routeProvider.when("/articles", {
         templateUrl: "/Views/Articles/Index.html",
@@ -193,5 +285,11 @@ app.config(function ($routeProvider) {
     }).when("/categories", {
         templateUrl: "/Views/Categories/Index.html",
         controller: "categoryController"
+    }).when("/articlesByCategory/:id", {
+        templateUrl: "/Views/Categories/ArticlesByCategory.html",
+        controller: "artsByCatController"
+    }).when("/users", {
+        templateUrl: "/Views/Users/Index.html",
+        controller: "userController"
     });
 });

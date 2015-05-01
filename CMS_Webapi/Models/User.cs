@@ -6,14 +6,17 @@ using System.Web;
 
 namespace CMS_Webapi.Models
 {
-    public class Category
+    public class User
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string Username { get; set; }
 
-        public virtual List<Article> Articles { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
+
+        public virtual ICollection<Article> Articles { get; set; }
     }
 }

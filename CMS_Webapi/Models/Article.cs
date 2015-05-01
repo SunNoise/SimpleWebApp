@@ -20,6 +20,9 @@ namespace CMS_Webapi.Models
         public string Content { get; set; }
 
         [Required]
+        public int AuthorId { get; set; }
+
+        [Required]
         public DateTime Date { get; set; }
 
         [Required]
@@ -31,7 +34,16 @@ namespace CMS_Webapi.Models
         [Required]
         public int CategoryId { get; set; }
 
+        [Required]
+        public int ReviewerId { get; set; }
+
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+
+        [ForeignKey("AuthorId")]
+        public virtual User Author { get; set; }
+
+        [ForeignKey("ReviewerId")]
+        public virtual User Reviewer { get; set; }
     }
 }

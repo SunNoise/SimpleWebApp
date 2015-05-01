@@ -12,44 +12,44 @@ using CMS_Webapi.Models;
 
 namespace CMS_Webapi.Controllers
 {
-    public class CategoriesController : ApiController
+    public class UsersController : ApiController
     {
         private Context db = new Context();
 
-        // GET: api/Categories
-        public IQueryable<Category> GetCategories()
+        // GET: api/Users
+        public IQueryable<User> GetUsers()
         {
-            return db.Categories;
+            return db.Users;
         }
 
-        // GET: api/Categories/5
-        [ResponseType(typeof(Category))]
-        public IHttpActionResult GetCategory(int id)
+        // GET: api/Users/5
+        [ResponseType(typeof(User))]
+        public IHttpActionResult GetUser(int id)
         {
-            Category category = db.Categories.Include(c => c.Articles).SingleOrDefault(c => c.Id == id);
-            if (category == null)
+            User user = db.Users.Find(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(category);
+            return Ok(user);
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCategory(int id, Category category)
+        public IHttpActionResult PutUser(int id, User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != category.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(category).State = EntityState.Modified;
+            db.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace CMS_Webapi.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -70,35 +70,35 @@ namespace CMS_Webapi.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Categories
-        [ResponseType(typeof(Category))]
-        public IHttpActionResult PostCategory(Category category)
+        // POST: api/Users
+        [ResponseType(typeof(User))]
+        public IHttpActionResult PostUser(User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Categories.Add(category);
+            db.Users.Add(user);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = category.Id }, category);
+            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Categories/5
-        [ResponseType(typeof(Category))]
-        public IHttpActionResult DeleteCategory(int id)
+        // DELETE: api/Users/5
+        [ResponseType(typeof(User))]
+        public IHttpActionResult DeleteUser(int id)
         {
-            Category category = db.Categories.Find(id);
-            if (category == null)
+            User user = db.Users.Find(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            db.Categories.Remove(category);
+            db.Users.Remove(user);
             db.SaveChanges();
 
-            return Ok(category);
+            return Ok(user);
         }
 
         protected override void Dispose(bool disposing)
@@ -110,9 +110,9 @@ namespace CMS_Webapi.Controllers
             base.Dispose(disposing);
         }
 
-        private bool CategoryExists(int id)
+        private bool UserExists(int id)
         {
-            return db.Categories.Count(e => e.Id == id) > 0;
+            return db.Users.Count(e => e.Id == id) > 0;
         }
     }
 }
