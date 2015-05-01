@@ -24,6 +24,9 @@
                         @Html.ActionLink("{{cat.Name}}", "Index", "Home", null, null, "articlesByCategory/{{cat.Id}}", null, null)
                     </li>
                 </ul>
+                <div class="navbar-text pull-right">
+                    @Html.ActionLink(User.Identity.Name, "Index", "Home", null, null, "account", null, null)
+                </div>
             </div>
         </div>
     </div>

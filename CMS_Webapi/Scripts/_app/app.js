@@ -43,6 +43,14 @@ app.controller("artsByCatController", function ($scope, categoryService) {
     $scope.category = categoryService.query();
 });
 
+app.controller("artsByAuthorController", function ($scope, articleService) {
+    $scope.articles = articleService.query();
+});
+
+app.controller("allArtsController", function ($scope, articleService) {
+    $scope.articles = articleService.query();
+});
+
 app.controller("articleController", function ($scope, articleService, categoryService, userService) {
     $scope.settings = {
         title: "Articles"
@@ -282,6 +290,12 @@ app.config(function ($routeProvider) {
     $routeProvider.when("/articles", {
         templateUrl: "/Views/Articles/Index.html",
         controller: "articleController"
+    }).when("/allArticles", {
+        templateUrl: "/Views/Articles/AllArticles.html",
+        controller: "allArtsController"
+    }).when("/articlesByAuthor/:id", {
+        templateUrl: "/Views/Articles/ArticlesByAuthor.html",
+        controller: "artsByAuthorController"
     }).when("/categories", {
         templateUrl: "/Views/Categories/Index.html",
         controller: "categoryController"

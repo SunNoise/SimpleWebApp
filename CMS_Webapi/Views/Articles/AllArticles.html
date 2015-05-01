@@ -1,0 +1,12 @@
+﻿<div class="row" ng-controller="AllArtsController">
+    <div class="col-lg-12">
+        <div class="col-md-4" ng-repeat="art in articles">
+            <h2><a href="/#articles/{{art.Id}}">{{art.Title}}</a></h2>
+            <hr />
+            <p>{{art.Date}}</p>
+            <p>Category: {{art.Category.Name}}</p>
+            Written by: <a href="/#articlesByAuthor/{{art.Id}}">{{art.Author.Username}}</a>
+        </div>
+        }
+    </div>
+</div>
