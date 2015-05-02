@@ -16,7 +16,5 @@ namespace CMS_Webapi.Models
 
         [EmailAddress]
         public string Email { get; set; }
-
-        public virtual ICollection<Article> Articles { get; set; }
     }
 }

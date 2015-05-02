@@ -62,7 +62,67 @@ app.controller("artsByAuthorController", function ($scope, $routeParams, article
 });
 
 app.controller("allArtsController", function ($scope, articleService) {
-    $scope.articles = articleService.query({authorId: ""});
+    $scope.articles = articleService.query();
+});
+
+app.controller("artsToReviewController", function ($scope, $routeParams, articleService, categoryService, userService) {
+    $scope.boolToStr = function (arg) { return arg ? "Approve" : "Don't Approve" };
+
+    $scope.settings = {
+        title: "Reviewing"
+    };
+    var rId = $routeParams.id;
+
+    $scope.articles = articleService.query({ reviewerId: rId });
+    $scope.categories = categoryService.query();
+    $scope.users = userService.query();
+
+    $scope.errors = [];
+
+    $scope.article = {
+        Id: "",
+        Title: "",
+        Content: "",
+        Date: "",
+        Reviewed: false,
+        Approved: false,
+        CategoryId: 0
+    };
+
+    $scope.reviewArticle = function () {
+        if ($scope.article.Id > 0) {
+            $scope.article.Reviewed = true;
+            articleService.update($scope.article, $scope.refreshArticles, $scope.errorMessage);
+        }
+    }
+
+    $scope.errorMessage = function (response) {
+        var errors = [];
+        for (var key in response.data.ModelState) {
+            for (var i = 0; i < response.data.ModelState[key].length; i++) {
+                errors.push(response.data.ModelState[key][i]);
+            }
+        }
+        $scope.errors = errors;
+    };
+
+    $scope.refreshArticles = function () {
+        $scope.articles = articleService.query();
+        $("#modal-dialog").modal("hide");
+    };
+
+    $scope.selectArticle = function (art) {
+        $scope.article = art;
+        $scope.showDialog("Review Article");
+    };
+
+    $scope.showDialog = function (title) {
+        $scope.errors = [];
+        $scope.settings.title = title;
+        $scope.categories = categoryService.query();
+        $scope.users = userService.query();
+        $("#modal-dialog").modal("show");
+    }
 });
 
 app.controller("articleController", function ($scope, articleService, categoryService, userService) {
@@ -313,6 +373,9 @@ app.config(function ($routeProvider) {
     }).when("/allArticles", {
         templateUrl: "/Views/Articles/AllArticles.html",
         controller: "allArtsController"
+    }).when("/articlesToReview", {
+        templateUrl: "/Views/Articles/ArticlesToReview.html",
+        controller: "artsToReviewController"
     }).when("/articlesByAuthor/:id", {
         templateUrl: "/Views/Articles/ArticlesByAuthor.html",
         controller: "artsByAuthorController"

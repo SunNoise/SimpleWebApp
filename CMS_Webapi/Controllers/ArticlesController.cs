@@ -17,12 +17,16 @@ namespace CMS_Webapi.Controllers
         private Context db = new Context();
 
         // GET: api/Articles
-        public IQueryable<Article> GetArticles(int? authorId)
+        public IQueryable<Article> GetArticles(int? authorId = null, int? reviewerId = null)
         {
             IQueryable<Article> articles = db.Articles;
             if (authorId != null)
             {
                 articles = db.Articles.Where(a => a.AuthorId == authorId);
+            }
+            if (reviewerId != null)
+            {
+                articles = db.Articles.Where(a => a.ReviewerId == reviewerId);
             }
 
             return articles;
@@ -54,9 +58,9 @@ namespace CMS_Webapi.Controllers
             {
                 return BadRequest();
             }
-
+            
             db.Entry(article).State = EntityState.Modified;
-
+            
             try
             {
                 db.SaveChanges();
