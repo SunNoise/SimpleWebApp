@@ -17,16 +17,22 @@ namespace CMS_Webapi.Controllers
         private Context db = new Context();
 
         // GET: api/Articles
-        public IQueryable<Article> GetArticles()
+        public IQueryable<Article> GetArticles(int? authorId)
         {
-            return db.Articles;
+            IQueryable<Article> articles = db.Articles;
+            if (authorId != null)
+            {
+                articles = db.Articles.Where(a => a.AuthorId == authorId);
+            }
+
+            return articles;
         }
 
         // GET: api/Articles/5
         [ResponseType(typeof(Article))]
         public IHttpActionResult GetArticle(int id)
         {
-            Article article = db.Articles.Find(id);
+            var article = db.Articles.Find(id);
             if (article == null)
             {
                 return NotFound();
