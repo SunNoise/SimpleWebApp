@@ -17,16 +17,21 @@ namespace CMS_Webapi.Controllers
         private Context db = new Context();
 
         // GET: api/Articles
-        public IQueryable<Article> GetArticles(int? authorId = null, int? reviewerId = null)
+        public IQueryable<Article> GetArticles(int? authorId = null, int? reviewerId = null, bool? all = null)
         {
             IQueryable<Article> articles = db.Articles;
+            if (all != null)
+            {
+                if (!(bool) all)
+                    articles = articles.Where(a => a.Approved);
+            }
             if (authorId != null)
             {
-                articles = db.Articles.Where(a => a.AuthorId == authorId);
+                articles = articles.Where(a => a.AuthorId == authorId);
             }
             if (reviewerId != null)
             {
-                articles = db.Articles.Where(a => a.ReviewerId == reviewerId);
+                articles = articles.Where(a => a.ReviewerId == reviewerId && !a.Reviewed);
             }
 
             return articles;

@@ -14,7 +14,6 @@
 
 <div ng-controller="artsToReviewController">
     <h2>Articles to review</h2>
-    <hr />
     <div class="modal fade" id="modal-dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -102,6 +101,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Content</th>
+                    <th>Category</th>
                     <th>Author</th>
                 </tr>
             </thead>
@@ -109,6 +109,7 @@
                 <tr ng-click="selectArticle(art)">
                     <td><span>{{art.Title}}</span></td>
                     <td><span>{{art.Content}}</span></td>
+                    <td><span>{{art.Category.Name}}</span></td>
                     <td><span>{{art.Author.Username}}</span></td>
                 </tr>
             </tbody>

@@ -27,11 +27,12 @@ namespace CMS_Webapi.Controllers
         public IHttpActionResult GetCategory(int id)
         {
             Category category = db.Categories.Include(c => c.Articles).SingleOrDefault(c => c.Id == id);
+            
             if (category == null)
             {
                 return NotFound();
             }
-
+            category.Articles = category.Articles.Where(art => art.Approved).ToList();
             return Ok(category);
         }
 
