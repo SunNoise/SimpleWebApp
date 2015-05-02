@@ -1,4 +1,16 @@
 ﻿<div ng-controller="artByIdController">
     <h1>{{article.Title}}</h1>
-    {{article.Content}}
+    <div id="artContent" ng-show="false">{{article.Content}}</div>
+    <div id="markdown"></div>
 </div>
+
+<script>
+    $('#artContent').bind('DOMSubtreeModified', function (event) {
+        var artContentText = this.innerHTML;
+        if (artContentText !== "" && artContentText !== "{{article.Content}}") {
+            var converter = new Showdown.converter();
+            var html = converter.makeHtml(artContentText);
+            $('#markdown').html(html);
+        }
+    });
+</script>
