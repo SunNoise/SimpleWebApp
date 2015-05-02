@@ -31,6 +31,12 @@ app.run(function ($rootScope) {
     });
 });
 
+app.controller("accController", function ($scope, $routeParams, userService) {
+    var userId = $routeParams.id;
+    var user = userService.get({ id: userId });
+    $scope.user = user;
+});
+
 app.controller("navController", function($scope, categoryService) {
     $scope.categories = categoryService.query();
 
@@ -39,12 +45,20 @@ app.controller("navController", function($scope, categoryService) {
     });
 });
 
-app.controller("artsByCatController", function ($scope, categoryService) {
-    $scope.category = categoryService.query();
+app.controller("artsByCatController", function ($scope, $routeParams, categoryService) {
+    var categoryId = $routeParams.id;
+    $scope.category = categoryService.get({ id: categoryId });
 });
 
-app.controller("artsByAuthorController", function ($scope, articleService) {
-    $scope.articles = articleService.query();
+app.controller("artByIdController", function ($scope, $routeParams, articleService) {
+    var articleId = $routeParams.id;
+    var article = articleService.get({ id: articleId });
+    $scope.article = article;
+});
+
+app.controller("artsByAuthorController", function ($scope, $routeParams, userService) {
+    var userId = $routeParams.id;
+    $scope.user = userService.get({ id: userId });
 });
 
 app.controller("allArtsController", function ($scope, articleService) {
@@ -287,9 +301,15 @@ app.controller("userController", function ($scope, userService, articleService) 
 });
 
 app.config(function ($routeProvider) {
-    $routeProvider.when("/articles", {
+    $routeProvider.when("/", {
+        templateUrl: "/Views/Articles/AllArticles.html",
+        controller: "allArtsController"
+    }).when("/articles", {
         templateUrl: "/Views/Articles/Index.html",
         controller: "articleController"
+    }).when("/article/:id", {
+        templateUrl: "/Views/Articles/Article.html",
+        controller: "artByIdController"
     }).when("/allArticles", {
         templateUrl: "/Views/Articles/AllArticles.html",
         controller: "allArtsController"
@@ -302,6 +322,9 @@ app.config(function ($routeProvider) {
     }).when("/articlesByCategory/:id", {
         templateUrl: "/Views/Categories/ArticlesByCategory.html",
         controller: "artsByCatController"
+    }).when("/account/:id", {
+        templateUrl: "/Views/Users/Account.html",
+        controller: "accController"
     }).when("/users", {
         templateUrl: "/Views/Users/Index.html",
         controller: "userController"

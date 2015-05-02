@@ -978,12 +978,16 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\showdown.js" />
+    <Content Include="Scripts\showdown.min.js" />
     <Content Include="Scripts\_app\app.js" />
     <Content Include="Views\Articles\AllArticles.html" />
+    <Content Include="Views\Articles\Article.html" />
     <Content Include="Views\Articles\ArticlesByAuthor.html" />
     <Content Include="Views\Articles\Index.html" />
     <Content Include="Views\Categories\ArticlesByCategory.html" />
     <Content Include="Views\Categories\Index.html" />
+    <Content Include="Views\Users\Account.html" />
     <Content Include="Views\Users\Index.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

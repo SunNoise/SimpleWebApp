@@ -15,7 +15,8 @@ namespace CMS_Webapi.Controllers
             ViewBag.Title = "Home Page";
 
             IEnumerable<User> users = _db.Users.Where(u => u.Username == User.Identity.Name);
-            if (!users.Any())
+            var user = users.FirstOrDefault();
+            if (user == null)
             {
                 var u = new User()
                 {
@@ -23,9 +24,10 @@ namespace CMS_Webapi.Controllers
                 };
                 _db.Users.Add(u);
                 _db.SaveChanges();
+                user = u;
             }
 
-            return View();
+            return View(user);
         }
     }
 }

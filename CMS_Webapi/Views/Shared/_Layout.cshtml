@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model CMS_Webapi.Models.User
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -16,7 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Single Page CMS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Single Page CMS", "Index", "Home", null, null, "allArticles", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" ng-controller="navController">
@@ -25,7 +26,7 @@
                     </li>
                 </ul>
                 <div class="navbar-text pull-right">
-                    @Html.ActionLink(User.Identity.Name, "Index", "Home", null, null, "account", null, null)
+                    @Html.ActionLink(User.Identity.Name, "Index", "Home", null, null, "account/" + Model.Id, null, null)
                 </div>
             </div>
         </div>

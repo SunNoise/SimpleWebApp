@@ -1,9 +1,16 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+﻿<div ng-controller="artsByAuthorController">
+    <h1>Articulos de {{user.Username}}</h1>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-md-3" ng-repeat="art in user.Articles">
+                <h2>
+                    <a href="/#article/{{art.Id}}">{{art.Title}}</a>
+                </h2>
+                <hr />
+                <p>{{art.Date}}</p>
+                <p>Category: {{art.Category.Name}}</p>
+                Written by: <a href="/#articlesByAuthor/{{art.Id}}">{{art.Author.Username}}</a>
+            </div>
+        </div>
+    </div>
+</div>
