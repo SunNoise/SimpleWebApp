@@ -114,6 +114,8 @@ app.controller("artsToReviewController", function ($scope, $routeParams, article
         Date: "",
         Reviewed: false,
         Approved: false,
+        AuthorId: 0,
+        ReviewerId: 0,
         CategoryId: 0
     };
 
@@ -219,6 +221,8 @@ app.controller("accArtController", function ($scope, $routeParams, articleServic
             Date: "",
             Reviewed: false,
             Approved: false,
+            AuthorId: 0,
+            ReviewerId: 0,
             CategoryId: 0
         };
     };
@@ -248,6 +252,8 @@ app.controller("articleController", function ($scope, articleService, categorySe
         Date: "",
         Reviewed: false,
         Approved: false,
+        AuthorId: 0,
+        ReviewerId:0,
         CategoryId: 0
     };
 
@@ -275,10 +281,6 @@ app.controller("articleController", function ($scope, articleService, categorySe
         $("#modal-dialog").modal("hide");
     };
 
-    $scope.deleteArticle = function (art) {
-        articleService.delete(art, $scope.refreshArticles);
-    };
-
     $scope.selectArticle = function (art) {
         $scope.article = art;
         $scope.showDialog("Edit Article");
@@ -292,6 +294,8 @@ app.controller("articleController", function ($scope, articleService, categorySe
             Date: "",
             Reviewed: false,
             Approved: false,
+            AuthorId: 0,
+            ReviewerId: 0,
             CategoryId: 0
         };
     };
@@ -343,6 +347,7 @@ app.controller("categoryController", function ($scope, categoryService) {
 
     $scope.deleteCategory = function (cat) {
         categoryService.delete(cat, $scope.refreshCategories, $scope.errorMessage);
+        $scope.clearCategory();
     };
 
     $scope.errorMessage = function (response) {
@@ -398,8 +403,7 @@ app.controller("userController", function ($scope, userService, articleService) 
     $scope.user = {
         Id: "",
         Username: "",
-        Email: "",
-        Articles: ""
+        Email: ""
     };
 
     $scope.saveUser = function() {
@@ -427,7 +431,8 @@ app.controller("userController", function ($scope, userService, articleService) 
     };
 
     $scope.deleteUser = function (user) {
-        userService.delete(user, $scope.refreshUsers);
+        userService.delete(user, $scope.refreshUsers, $scope.errorMessage);
+        $scope.clearUsers();
     };
 
     $scope.selectUser = function (user) {
@@ -435,22 +440,16 @@ app.controller("userController", function ($scope, userService, articleService) 
         $scope.showDialog("Edit User");
     };
 
-    $scope.clearUser = function () {
+    $scope.clearUsers = function () {
         $scope.user = {
             Id: "",
             Username: "",
-            Email: "",
-            Articles: ""
+            Email: ""
         };
     };
 
-    $scope.deleteUser = function(user) {
-        userService.delete(user, $scope.refreshUsers, $scope.errorMessage);
-        $scope.clearUser();
-    };
-
     $scope.showAddUserDialog = function() {
-        $scope.clearUser();
+        $scope.clearUsers();
         $scope.showDialog("Add New User");
     };
 

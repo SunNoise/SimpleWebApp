@@ -20,7 +20,8 @@ namespace CMS_Webapi.Controllers
             {
                 var u = new User()
                 {
-                    Username = User.Identity.Name
+                    Username = User.Identity.Name,
+                    Email = "please@update.me"
                 };
                 _db.Users.Add(u);
                 _db.SaveChanges();

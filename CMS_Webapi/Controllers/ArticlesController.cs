@@ -6,6 +6,8 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
+using System.Text;
 using System.Web.Http;
 using System.Web.Http.Description;
 using CMS_Webapi.Models;
@@ -70,6 +72,7 @@ namespace CMS_Webapi.Controllers
             try
             {
                 db.SaveChanges();
+                SendMail(article.Approved ? 1 : 2, article);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -101,6 +104,7 @@ namespace CMS_Webapi.Controllers
 
             db.Articles.Add(article);
             db.SaveChanges();
+            SendMail(0, article);
 
             return CreatedAtRoute("DefaultApi", new { id = article.Id }, article);
         }
@@ -133,6 +137,72 @@ namespace CMS_Webapi.Controllers
         private bool ArticleExists(int id)
         {
             return db.Articles.Count(e => e.Id == id) > 0;
+        }
+
+        public void SendMail(int msgType, Article article)
+        {
+            if (article.Author == null)
+                article.Author = db.Users.First(u=>u.Id == article.AuthorId);
+            if(article.Reviewer == null)
+                article.Reviewer = db.Users.First(u => u.Id == article.ReviewerId);
+            String typeSubject = "";
+            String content = "";
+            MailAddress toAddress = new MailAddress(article.Author.Email, article.Author.Username);
+            switch (msgType)
+            {
+                //Reviewer has new Article to review
+                case 0:
+                    typeSubject = "------!NEW Article to review!------";
+                    content = "A new article has been given to you to review";
+                    toAddress = new MailAddress(article.Reviewer.Email, article.Reviewer.Username);
+                    break;
+                //Writer's Article is accpeted and published
+                case 1:
+                    typeSubject = "------Article APPROVED------";
+                    content = "Your article has been aproved";
+                    break;
+                //Writer's Article is not approved
+                case 2:
+                    typeSubject = "------Article NOT APPROVED------";
+                    content = "Your article has not been aproved";
+                    break;
+            }
+            try
+            {
+                var fromAddress = new MailAddress("juegorupi@gmail.com", "NotificationBot");
+                const string fromPassword = "rupirupi";
+                const string subject = "NEW NOTIFICATION";
+                StringBuilder sb = new StringBuilder();
+                sb.Append(typeSubject);
+                sb.Append(Environment.NewLine);
+                sb.Append(content);
+                sb.Append(Environment.NewLine);
+                sb.Append("Article Name: " + article.Title);
+
+                string body = sb.ToString();
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    smtp.Send(message);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

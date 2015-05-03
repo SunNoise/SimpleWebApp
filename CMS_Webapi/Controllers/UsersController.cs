@@ -46,7 +46,7 @@ namespace CMS_Webapi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (!IsValidEmail(user.Email))
+            if (!IsValidEmail(user.Email) && !String.IsNullOrEmpty(user.Email))
             {
                 ModelState.AddModelError("email", "Email format is wrong");
                 return BadRequest(ModelState);
