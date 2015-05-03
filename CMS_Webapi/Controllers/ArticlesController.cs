@@ -27,7 +27,7 @@ namespace CMS_Webapi.Controllers
             }
             if (authorId != null)
             {
-                articles = articles.Where(a => a.AuthorId == authorId);
+                articles = articles.Where(a => a.AuthorId == authorId && a.Approved);
             }
             if (reviewerId != null)
             {
@@ -63,8 +63,9 @@ namespace CMS_Webapi.Controllers
             {
                 return BadRequest();
             }
-            
-            db.Entry(article).State = EntityState.Modified;
+
+            var currentArticle = db.Articles.Find(article.Id);
+            db.Entry(currentArticle).CurrentValues.SetValues(article);
             
             try
             {

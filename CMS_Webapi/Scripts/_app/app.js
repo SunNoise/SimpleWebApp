@@ -58,11 +58,11 @@ app.controller("artByIdController", function ($scope, $routeParams, articleServi
 
 app.controller("artsByAuthorController", function ($scope, $routeParams, articleService) {
     var aId = $routeParams.id;
-    $scope.articles = articleService.get({ authorId: aId });
+    $scope.articles = articleService.query({ authorId: aId });
 });
 
 app.controller("allArtsController", function ($scope, articleService) {
-    $scope.articles = articleService.get({ all: false });
+    $scope.articles = articleService.query({ all: false });
 });
 
 app.controller("artsToReviewController", function ($scope, $routeParams, articleService, categoryService, userService) {
@@ -107,7 +107,7 @@ app.controller("artsToReviewController", function ($scope, $routeParams, article
     };
 
     $scope.refreshArticles = function () {
-        $scope.articles = articleService.query();
+        $scope.articles = articleService.query({ reviewerId: rId });
         $("#modal-dialog").modal("hide");
     };
 

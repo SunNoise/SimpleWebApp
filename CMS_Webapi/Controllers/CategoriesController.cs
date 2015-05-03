@@ -50,7 +50,8 @@ namespace CMS_Webapi.Controllers
                 return BadRequest();
             }
 
-            db.Entry(category).State = EntityState.Modified;
+            var currentCategory = db.Categories.Find(category.Id);
+            db.Entry(currentCategory).CurrentValues.SetValues(category);
 
             try
             {
