@@ -12,6 +12,7 @@ namespace CMS_Webapi.Controllers
         private readonly Context _db = new Context();
         public ActionResult Index()
         {
+            //It's done!
             ViewBag.Title = "Home Page";
 
             IEnumerable<User> users = _db.Users.Where(u => u.Username == User.Identity.Name);
