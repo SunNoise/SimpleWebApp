@@ -17,17 +17,17 @@ namespace CMS_Webapi.Controllers
         private Context db = new Context();
 
         // GET: api/Articles
-        public IQueryable<Article> GetArticles(int? authorId = null, int? reviewerId = null, bool? all = null)
+        public IQueryable<Article> GetArticles(int? authorId = null, int? reviewerId = null, bool? onlyApproved = null)
         {
             IQueryable<Article> articles = db.Articles;
-            if (all != null)
+            if (onlyApproved != null)
             {
-                if (!(bool) all)
+                if ((bool)onlyApproved)
                     articles = articles.Where(a => a.Approved);
             }
             if (authorId != null)
             {
-                articles = articles.Where(a => a.AuthorId == authorId && a.Approved);
+                articles = articles.Where(a => a.AuthorId == authorId);
             }
             if (reviewerId != null)
             {
@@ -90,6 +90,10 @@ namespace CMS_Webapi.Controllers
         [ResponseType(typeof(Article))]
         public IHttpActionResult PostArticle(Article article)
         {
+            article.Approved = false;
+            article.Reviewed = false;
+            article.Date = DateTime.Now;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
